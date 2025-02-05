@@ -97,11 +97,11 @@ services:
     ports:
       - '${CORE_API_PORT}:${CORE_API_PORT}'
     environment:
-      - DB_HOST="${DB_HOST}"
-      - DB_PORT="${DB_PORT}"
-      - DB_NAME="${DB_NAME}"
-      - DB_USER="${DB_USERNAME}"
-      - DB_PASSWORD="${DB_PASSWORD}"
+      - DB_HOST=${DB_HOST:-bookcow-db}
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME:-bookcow-db}
+      - DB_USER=${DB_USERNAME:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
 
   bookcow-db:
     image: postgres:13.8
@@ -148,11 +148,11 @@ services:
       - bookcow-db
     environment:
       - API_PORT=${ACTUALIZER_API_PORT}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_NAME=${DB_NAME}
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST:-bookcow-db}
+      - DB_PORT=${DB_PORT:-5432}
+      - DB_USERNAME=${DB_USERNAME:-postgres}
+      - DB_NAME=${DB_NAME:-bookcow-db}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
     ports:
       - "${ACTUALIZER_API_PORT}:${ACTUALIZER_API_PORT}"
     restart: always
@@ -168,6 +168,12 @@ services:
         max-file: "15"
     networks:
       - backend
+
+  frontend:
+    build: https://${GIT_TOKEN}@github.com/Work-F-free/client.git#${FRONTEND_BRANCH}
+    ports:
+      - "${FRONTEND_PORT}:80"
+
 
 volumes:
   minio_data:
