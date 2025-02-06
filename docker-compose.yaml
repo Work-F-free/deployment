@@ -28,8 +28,6 @@ services:
         limits:
           cpus: "0.5"
           memory: 2G
-    networks:
-      - frontend
 
   mongo:
     image: mongo:6.0
@@ -182,7 +180,6 @@ volumes:
   minio_data:
 
 networks:
-  frontend:
   backend:
   backend_1:
   local_network:
